@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bhaukaal FM — Bhojpuri hits</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="stage">
+      <div class="backdrop"></div><div class="wash"></div><div class="grain"></div>
+      <header>
+        <a class="brand" href="#"><span class="brand-mark">भ</span><span>BHAUKAAL<br /><i>FM</i></span></a>
+        <div class="live"><span></span><b id="liveCount">—</b> <span class="live-label">live now</span></div>
+        <nav><button type="button" id="mood"><span>☾</span> night</button><button type="button" id="share">⌘ share</button><button type="button" class="round" id="info">i</button></nav>
+      </header>
+
+      <section class="hero">
+        <div class="eyebrow"><span></span> PATNA • BIHAR • INDIA</div>
+        <h1>भोजपुरी<br /><em>बवाल</em></h1>
+        <p>आवाज़ ऐसी, दिल बोले — <b>फिर से बजा!</b></p>
+        <div class="hero-actions"><button type="button" class="play-big" id="heroPlay">▶</button><span id="heroStatus">आज के सबसे गरम गाने</span></div>
+      </section>
+
+      <aside class="ride-card"><small>TONIGHT'S RIDE</small><strong>06 <i>:</i> 45 <em>pm</em></strong><div class="mini-bars"><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div></aside>
+      <div class="plate"><small>AUTO NO.</small><b>BR-01 <i>BP</i> 7865</b></div>
+
+      <section class="player" aria-label="Music player">
+        <div class="album"><div class="record"></div><span>🔥</span></div>
+        <div class="track"><b id="title">लॉलीपॉप लागेलू</b><span id="artist">Pawan Singh • Bhojpuri Classics</span><div class="progress"><i></i></div><small><span id="elapsed">0:00</span><span>3:42</span></small></div>
+        <div class="controls"><button type="button" id="shuffle" aria-label="Shuffle">⇄</button><button type="button" id="previous" aria-label="Previous song">|◀</button><button type="button" class="main-play" id="play" aria-label="Play">▶</button><button type="button" id="next" aria-label="Next song">▶|</button><button type="button" id="queue" aria-label="Show hit list">☷</button></div>
+      </section>
+
+      <div class="ticker"><span>बिहार के सबसे तगड़ा sound system</span><b>•</b><span>created</span> <span>by</span> <b>•</b> <span> Shadab </span> <span>Hashmi</span> <b>•</b> <span></span> </div>
+    </main>
+    <section class="hit-list" id="hitList">
+      <div><p class="section-kicker">POWERED BY THE PEOPLE</p><h2>Hit list <span>★</span></h2></div>
+      <div class="songs" id="songs"></div>
+    </section>
+    <section class="discover" id="discover">
+      <div class="discover-head"><div><p class="section-kicker">FIND YOUR VIBE</p><h2>Apna mood, <em>apna sound.</em></h2></div><p>Choose a lane and let the road decide the rest.</p></div>
+      <div class="moods" role="group" aria-label="Filter tracks"><button class="mood-chip active" type="button" data-filter="all">All rides <span>08</span></button><button class="mood-chip" type="button" data-filter="dance">Dance floor</button><button class="mood-chip" type="button" data-filter="love">Dil se</button><button class="mood-chip" type="button" data-filter="road">Road trip</button></div>
+      <div class="discover-grid" id="discoverGrid"></div>
+    </section>
+    <section class="playlists" id="playlists">
+      <div><p class="section-kicker">HANDPICKED FOR THE RIDE</p><h2>Hit <em>playlists.</em></h2></div>
+      <div class="playlist-grid"><button type="button" class="playlist-card orange" data-playlist="all"><span>01</span><b>Bhojpuri Bangers</b><small>Today’s loudest hits</small><i>▶</i></button><button type="button" class="playlist-card purple" data-playlist="love"><span>02</span><b>Dil Se Bhojpuri</b><small>Soft songs, big feelings</small><i>▶</i></button><button type="button" class="playlist-card green" data-playlist="dance"><span>03</span><b>DJ Auto Stand</b><small>Full volume only</small><i>▶</i></button><button type="button" class="playlist-card blue" data-playlist="road"><span>04</span><b>Highway Bhojpuri</b><small>For long night rides</small><i>▶</i></button></div>
+    </section>
+    <div class="toast" id="toast" role="status">Link copied to your clipboard</div>
+    <div id="youtubePlayer" aria-hidden="true"></div>
+    <script src="youtube.config.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
