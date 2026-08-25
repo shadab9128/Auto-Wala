@@ -20,6 +20,7 @@ const discoverGrid = $('#discoverGrid');
 const liveCount = $('#liveCount');
 
 function showToast(message) { $('#toast').textContent = message; $('#toast').classList.add('show'); clearTimeout(showToast.timeout); showToast.timeout = setTimeout(() => $('#toast').classList.remove('show'), 2400); }
+function updateClock() { const now = new Date(); const hours = now.getHours(); $('#clockHour').textContent = String(hours % 12 || 12).padStart(2, '0'); $('#clockMinute').textContent = String(now.getMinutes()).padStart(2, '0'); $('#clockMeridiem').textContent = hours >= 12 ? 'pm' : 'am'; }
 function renderSongs() { songsEl.innerHTML = songs.map((song, i) => `<article class="song" data-row="${i}"><span class="song-num">${String(i + 1).padStart(2, '0')}</span><span class="song-cover" style="--c:${song[2]}"></span><div><b>${song[0]}</b><small>${song[1]}</small></div><button type="button" data-song="${i}" aria-label="Play ${song[0]}">▶</button></article>`).join(''); document.querySelector('[data-filter="all"] span').textContent = String(songs.length).padStart(2, '0'); }
 function renderDiscover(filter = 'all') { discoverGrid.innerHTML = songs.map((song, i) => `<article class="discover-card ${filter !== 'all' && song[3] !== filter ? 'hidden' : ''}" style="--card:${song[2]}" data-card="${i}"><small>${song[3].toUpperCase()} RIDE</small><b>${song[0]}</b><small>${song[1]}</small><div class="card-actions"><button type="button" class="heart" data-save="${i}" aria-label="Save ${song[0]}">♡</button><button type="button" class="card-play" data-play="${i}" aria-label="Play ${song[0]}">▶</button></div></article>`).join(''); }
 function render() {
@@ -74,3 +75,4 @@ function visitorId() { let id = localStorage.getItem('bhaukaal-visitor'); if (!i
 async function heartbeat() { if (needsLocalServer) return; try { const response = await fetch('/api/presence', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ visitorId: visitorId() }) }); if (!response.ok) throw new Error('presence unavailable'); const data = await response.json(); liveCount.textContent = data.online; } catch { liveCount.textContent = '—'; } }
 document.addEventListener('visibilitychange', () => { if (!document.hidden) heartbeat(); });
 renderSongs(); renderDiscover(); render(); loadFreshHits(); heartbeat(); setInterval(heartbeat, 25_000);
+updateClock(); setInterval(updateClock, 1_000);
