@@ -8,7 +8,8 @@ const fallbackSongs = [
   ['चुनरिया लेले अइहा', 'Highway tunes', '#557b38', 'road', ''],
   ['गोरिया चली ना', 'Fresh arrival', '#a44b75', 'love', '']
 ];
-let songs = [...fallbackSongs];
+const playableFallbackSongs = fallbackSongs.filter(song => song[4]);
+let songs = [...playableFallbackSongs];
 let index = 1, playing = false, seconds = 0, duration = 222, timer, ytPlayer, ytReady = false, loadedVideoId = '';
 const config = window.YT_CONFIG || { apiKey: '' };
 const needsLocalServer = location.protocol === 'file:';
@@ -50,7 +51,7 @@ async function loadFreshHits() {
     const youtubeSongs = data.items.filter(item => !blocked.test(`${item.snippet.title} ${item.snippet.channelTitle} ${item.snippet.description || ''}`)).slice(0, 24).map((item, i) => [item.snippet.title, item.snippet.channelTitle, colors[i % colors.length], ['dance', 'love', 'road'][i % 3], item.id.videoId]);
     if (!youtubeSongs.length) throw new Error('no eligible music');
     const hardcodedVideoIds = new Set(fallbackSongs.map(song => song[4]).filter(Boolean));
-    songs = [...fallbackSongs, ...youtubeSongs.filter(song => !hardcodedVideoIds.has(song[4]))];
+    songs = [...playableFallbackSongs, ...youtubeSongs.filter(song => !hardcodedVideoIds.has(song[4]))];
     index = 0; renderSongs(); renderDiscover(); render(); showToast('Fresh hits updated from YouTube');
   } catch { showToast('Could not load fresh hits — using the local selection'); }
 }
