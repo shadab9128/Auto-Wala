@@ -8,6 +8,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
+    <style>
+      .about{display:flex;align-items:end;justify-content:space-between;gap:48px;padding:90px max(7vw,32px);background:#102b21;border-top:1px solid rgba(255,255,255,.08)}
+      .about h2{margin:8px 0 0;font-size:clamp(40px,5vw,68px);line-height:.94;letter-spacing:-.075em}
+      .about h2 em{color:#60dc8c;font-style:normal}
+      .about-copy{max-width:430px;color:#a9bdb5;line-height:1.7}
+      .about-copy p{margin:0 0 14px}
+      .about-copy b{display:inline-block;min-width:76px;color:#f4f1df}
+      .about-copy a{color:#f4c928;text-decoration:none}
+      @media(max-width:720px){.about{display:block;padding:65px 26px}.about-copy{margin-top:28px}}
+    </style>
   </head>
   <body>
     <main class="stage">
@@ -25,7 +35,7 @@
         <div class="hero-actions"><button type="button" class="play-big" id="heroPlay">▶</button><span id="heroStatus">आज के सबसे गरम गाने</span></div>
       </section>
 
-      <aside class="ride-card"><small>TONIGHT'S RIDE</small><strong><span id="clockHour">--</span> <i>:</i> <span id="clockMinute">--</span> <em id="clockMeridiem">--</em></strong><div class="mini-bars"><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div></aside>
+      <aside class="ride-card"><small>AUTO-WALA RIDE</small><strong><span id="clockHour">--</span> <i>:</i> <span id="clockMinute">--</span> <em id="clockMeridiem">--</em></strong><div class="mini-bars"><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div></aside>
       <div class="plate"><small>AUTO NO.</small><b>BR-01 <i>BP</i> 7865</b></div>
 
       <section class="player" aria-label="Music player">
@@ -48,6 +58,10 @@
     <section class="playlists" id="playlists">
       <div><p class="section-kicker">HANDPICKED FOR THE RIDE</p><h2>Hit <em>playlists.</em></h2></div>
       <div class="playlist-grid"><button type="button" class="playlist-card orange" data-playlist="all"><span>01</span><b>Bhojpuri Bangers</b><small>Today’s loudest hits</small><i>▶</i></button><button type="button" class="playlist-card purple" data-playlist="love"><span>02</span><b>Dil Se Bhojpuri</b><small>Soft songs, big feelings</small><i>▶</i></button><button type="button" class="playlist-card green" data-playlist="dance"><span>03</span><b>DJ Auto Stand</b><small>Full volume only</small><i>▶</i></button><button type="button" class="playlist-card blue" data-playlist="road"><span>04</span><b>Highway Bhojpuri</b><small>For long night rides</small><i>▶</i></button></div>
+    </section>
+    <section class="about" id="about">
+      <div><p class="section-kicker">ABOUT AUTO-WALA FM</p><h2>Music for every <em>ride.</em></h2></div>
+      <div class="about-copy"><p>Auto-Wala FM brings Bhojpuri classics and fresh hits together for every road, mood, and late-night ride.</p><p><b>Creator</b> Shadab Hashmi</p><p><b>Email</b> <a href="mailto:hashmishadab024@gmail.com">hashmishadab024@gmail.com</a></p></div>
     </section>
     <div class="toast" id="toast" role="status">Link copied to your clipboard</div>
     <div id="youtubePlayer" aria-hidden="true"></div>
