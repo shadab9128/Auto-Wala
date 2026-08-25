@@ -23,19 +23,20 @@ function render() {
   const song = songs[index];
   $('#title').textContent = song[0]; $('#artist').textContent = song[1];
   $('#heroStatus').textContent = playing ? `चल रहा है — ${song[0]}` : 'आज के सबसे गरम गाने';
-  document.querySelector('.progress i').style.width = `${Math.min(100, (seconds / duration) * 100)}%`;
+  document.querySelector('.progress i').style.width = `${duration ? Math.min(100, (seconds / duration) * 100) : 0}%`;
   $('#elapsed').textContent = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
+  $('#totalDuration').textContent = duration ? `${Math.floor(duration / 60)}:${String(duration % 60).padStart(2, '0')}` : '--:--';
   $('#play').textContent = playing ? '❚❚' : '▶'; $('#heroPlay').textContent = playing ? '❚❚' : '▶';
   document.querySelectorAll('.song').forEach(row => row.classList.toggle('active', +row.dataset.row === index));
   document.querySelectorAll('[data-song]').forEach(button => button.textContent = +button.dataset.song === index && playing ? '❚❚' : '▶');
 }
 function currentVideoId() { return songs[index]?.[4]; }
-function startTimer() { clearInterval(timer); timer = setInterval(() => { if (ytReady && currentVideoId()) { seconds = Math.floor(ytPlayer.getCurrentTime() || 0); duration = Math.floor(ytPlayer.getDuration() || 222); } else { seconds++; if (seconds >= duration) change(index + 1, true); } render(); }, 500); }
+function startTimer() { clearInterval(timer); timer = setInterval(() => { if (ytReady && currentVideoId()) { seconds = Math.floor(ytPlayer.getCurrentTime() || 0); duration = Math.floor(ytPlayer.getDuration() || 0); } else { seconds++; if (seconds >= duration) change(index + 1, true); } render(); }, 500); }
 function playCurrent() { const videoId = currentVideoId(); if (ytReady && videoId) { if (loadedVideoId === videoId) ytPlayer.playVideo(); else { loadedVideoId = videoId; ytPlayer.loadVideoById(videoId); } return true; } if (!videoId) showToast('Add your API key to unlock this fresh-hit track'); return false; }
 function toggle() { if (needsLocalServer) { showToast('Start server.js, then open localhost:4173'); return; } if (playing) { playing = false; clearInterval(timer); if (ytReady && currentVideoId()) ytPlayer.pauseVideo(); render(); return; } if (ytReady && currentVideoId()) { playing = true; playCurrent(); startTimer(); render(); return; } if (currentVideoId()) { showToast('YouTube player is loading — try again in a moment'); return; } playing = true; startTimer(); render(); }
 function change(nextIndex, keepPlaying = playing) { index = (nextIndex + songs.length) % songs.length; seconds = 0; clearInterval(timer); playing = keepPlaying; if (playing) { if (currentVideoId() && ytReady) playCurrent(); else if (!currentVideoId()) showToast('Connect the YouTube API key for this track'); startTimer(); } render(); if (!playing) showToast(`${songs[index][0]} selected`); }
 
-window.onYouTubeIframeAPIReady = () => { ytPlayer = new YT.Player('youtubePlayer', { height: '200', width: '200', videoId: currentVideoId(), playerVars: { playsinline: 1, controls: 0, rel: 0, origin: location.origin }, events: { onReady: () => { ytReady = true; loadedVideoId = currentVideoId(); }, onError: () => showToast('This YouTube video is unavailable — choose another track'), onStateChange: event => { if (event.data === YT.PlayerState.PLAYING) { playing = true; startTimer(); } if (event.data === YT.PlayerState.PAUSED) { playing = false; clearInterval(timer); } if (event.data === YT.PlayerState.ENDED) change(index + 1, true); render(); } } }); };
+window.onYouTubeIframeAPIReady = () => { ytPlayer = new YT.Player('youtubePlayer', { height: '200', width: '200', videoId: currentVideoId(), playerVars: { playsinline: 1, controls: 0, rel: 0, origin: location.origin }, events: { onReady: () => { ytReady = true; loadedVideoId = currentVideoId(); duration = Math.floor(ytPlayer.getDuration() || 0); render(); }, onError: () => showToast('This YouTube video is unavailable — choose another track'), onStateChange: event => { if (event.data === YT.PlayerState.PLAYING) { playing = true; startTimer(); } if (event.data === YT.PlayerState.PAUSED) { playing = false; clearInterval(timer); } if (event.data === YT.PlayerState.ENDED) change(index + 1, true); duration = Math.floor(ytPlayer.getDuration() || duration); render(); } } }); };
 if (needsLocalServer) { showToast('Audio needs http://localhost:4173 — see README'); } else { const youtubeScript = document.createElement('script'); youtubeScript.src = 'https://www.youtube.com/iframe_api'; youtubeScript.async = true; document.head.appendChild(youtubeScript); }
 
 async function loadFreshHits() {
