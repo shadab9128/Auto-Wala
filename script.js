@@ -1,4 +1,4 @@
-let songs = [
+const fallbackSongs = [
   ['लॉलीपॉप लागेलू', 'Pawan Singh • Bhojpuri Classics', '#e95226', 'dance', 'BZ_Pmu1g1ts'],
   ['दिलवा ले गईले राजा', 'Shilpi Raj • Bhojpuri hit', '#913fbe', 'love', '5kJMtNWUytY'],
   ['नथुनिया 2', 'Bhojpuri dance mix', '#e6a71c', 'dance', ''],
@@ -8,6 +8,7 @@ let songs = [
   ['चुनरिया लेले अइहा', 'Highway tunes', '#557b38', 'road', ''],
   ['गोरिया चली ना', 'Fresh arrival', '#a44b75', 'love', '']
 ];
+let songs = [...fallbackSongs];
 let index = 1, playing = false, seconds = 0, duration = 222, timer, ytPlayer, ytReady = false, loadedVideoId = '';
 const config = window.YT_CONFIG || { apiKey: '' };
 const needsLocalServer = location.protocol === 'file:';
@@ -46,8 +47,10 @@ async function loadFreshHits() {
     const data = await response.json();
     const colors = ['#e95226', '#913fbe', '#e6a71c', '#17706b', '#177e90', '#cb4d44', '#557b38', '#a44b75'];
     const blocked = /\b(bhakti|bhajan|devotional|devotion|aarti|arti|chhath|shiv|shiva|mahadev|bholenath|ram|hanuman|durga|devi|mata|krishna|radha|navratri|sawan|kanwar|kawariya|islamic|naat|allah)\b|भक्ति|भजन|आरती|छठ|महादेव|भोलेनाथ|शिव|राम|हनुमान|दुर्गा|देवी|माता|कृष्ण|राधा|नवरात्रि|सावन|कांवड़|कावड़|नात|इस्लामिक/i;
-    songs = data.items.filter(item => !blocked.test(`${item.snippet.title} ${item.snippet.channelTitle} ${item.snippet.description || ''}`)).slice(0, 12).map((item, i) => [item.snippet.title, item.snippet.channelTitle, colors[i % colors.length], ['dance', 'love', 'road'][i % 3], item.id.videoId]);
-    if (!songs.length) throw new Error('no eligible music');
+    const youtubeSongs = data.items.filter(item => !blocked.test(`${item.snippet.title} ${item.snippet.channelTitle} ${item.snippet.description || ''}`)).slice(0, 24).map((item, i) => [item.snippet.title, item.snippet.channelTitle, colors[i % colors.length], ['dance', 'love', 'road'][i % 3], item.id.videoId]);
+    if (!youtubeSongs.length) throw new Error('no eligible music');
+    const hardcodedVideoIds = new Set(fallbackSongs.map(song => song[4]).filter(Boolean));
+    songs = [...fallbackSongs, ...youtubeSongs.filter(song => !hardcodedVideoIds.has(song[4]))];
     index = 0; renderSongs(); renderDiscover(); render(); showToast('Fresh hits updated from YouTube');
   } catch { showToast('Could not load fresh hits — using the local selection'); }
 }
